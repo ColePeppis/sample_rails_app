@@ -40,7 +40,6 @@ describe "Authentication" do
       describe "and sign up" do
         before{ visit signup_path }
       
-        it { should have_selector('h1', text: 'Sample App') }
         it { should have_title(full_title('')) }
       end
       
@@ -109,6 +108,19 @@ describe "Authentication" do
 
         describe "submitting to the update action" do
           before { patch user_path(user) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
+
+      describe "in the Microposts controller" do
+
+        describe "submitting to the create action" do
+          before { post microposts_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete micropost_path(FactoryGirl.create(:micropost)) }
           specify { expect(response).to redirect_to(signin_path) }
         end
       end
